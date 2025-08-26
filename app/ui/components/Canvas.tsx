@@ -21,7 +21,7 @@ interface OuterRect {
   collidesPoint(inputX: number, inputY: number): boolean;
   collidesLine(x1: number, y1: number, x2: number, y2: number): boolean;
   getNextAnimationState(): AnimationState;
-  animate(): void;
+  animate(duration: number): void;
   animationState: AnimationConfig;
 }
 
@@ -51,7 +51,7 @@ type AnimationState = {
 
 export const RandomShapeCanvas = ({ w, h, subdivs }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const mousePosRef = useRef({ x: -1, y: -1 });
+  const mousePosRef = useRef<Pos>({ x: -1, y: -1 });
 
   let outerRects: OuterRect[] = [];
   let line = null;
@@ -84,7 +84,7 @@ export const RandomShapeCanvas = ({ w, h, subdivs }) => {
 
     const updateCurrentState = () => {
       if (currentState.y > h) currentState.y = 0;
-      currentState.y;
+      currentState.y += 2;
     }
 
     return {
@@ -122,7 +122,7 @@ export const RandomShapeCanvas = ({ w, h, subdivs }) => {
     };
 
     let animationState: AnimationConfig = {
-      duration: 500,
+      duration: 250,
       startTime: null,
       fromState: null,
       toState: null,
@@ -148,7 +148,8 @@ export const RandomShapeCanvas = ({ w, h, subdivs }) => {
       };
     };
 
-    const animate = () => {
+    const animate = (duration: number) => {
+      animationState.duration = duration;
       animationState.fromState = currentState;
       animationState.toState = getNextAnimationState();
       animationState.startTime = performance.now();
@@ -320,12 +321,12 @@ export const RandomShapeCanvas = ({ w, h, subdivs }) => {
     ctx.fillRect(0, 0, w, h);
     outerRects.forEach((outerRect_) => {
       outerRect_.draw();
-      if(outerRect_.collidesLine(0, line.currentState.y, w, line.currentState.y) && !outerRect_.animationState.isAnimating){
-        outerRect_.animate();
-      }
+      // if(outerRect_.collidesLine(0, line.currentState.y, w, line.currentState.y) && !outerRect_.animationState.isAnimating){
+      //   outerRect_.animate();
+      // }
     });
     // line.draw();
-    line.updateCurrentState();
+    // line.updateCurrentState();
     requestAnimationFrame(drawCanvas);
   };
 
@@ -333,11 +334,22 @@ export const RandomShapeCanvas = ({ w, h, subdivs }) => {
     setupCanvas();
     setupOuterRects();
     drawCanvas();
+
+    setInterval(() => {
+      const indexes = [];
+      for(let i = 0; i < outerRects.length / 4; i++){
+        indexes.push(outerRects.indexOf(utils().choose(outerRects)));
+      }
+      for(let i = 0; i < outerRects.length / 4; i++){
+        outerRects[indexes[i]].animate(1000);
+      }
+    }, 5000);
+
     const handleMouseMove = (event: MouseEvent) => {
       mousePosRef.current = getMousePos(event);
       outerRects.forEach((outerRect_) => {
         if (outerRect_.collidesPoint(mousePosRef.current.x, mousePosRef.current.y) && !outerRect_.animationState.isAnimating) {
-          outerRect_.animate();
+          outerRect_.animate(250);
         }
       });
     };
