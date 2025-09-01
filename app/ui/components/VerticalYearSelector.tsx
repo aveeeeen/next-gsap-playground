@@ -12,6 +12,20 @@ interface VerticalYearSelectorProps {
 
 // --- スタイル定義 ---
 const styles: { [key: string]: React.CSSProperties } = {
+  verticalYearSelector: {
+      padding: "8px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "12px",
+      width: "100%",
+      height: "400px",
+      boxSizing: "border-box",
+  },
+  heading: {
+      fontSize: "2rem",
+      fontWeight: "bold",
+      textAlign: "end"
+    },
   selectorContainer: {
     position: "relative",
     width: "300px", // 固定幅
@@ -139,30 +153,35 @@ const VerticalYearSelector: React.FC<VerticalYearSelectorProps> = ({
   })
 
   return (
-    <div  
-      style={styles.selectorContainer}
-      ref={containerRef}
-      onMouseEnter={handleHoverContainer}
-      onMouseLeave={hadleHoverExitContainer}
-    >
-      {years.map((year, index) => (
-        // アイテムをspanに変更
-        <span
-          key={year}
-          className="selector-item"
-          style={styles.selectorItem}
-          onClick={() => handleSelect(index)}
-          onMouseEnter={(e) => handleHoverItem(e, index)}
-          onMouseLeave={(e) => handleHoverExitItem(e, index)}
-        >
-          {year}
-        </span>
-      ))}
-      <span className="selector-item" style={styles.selectorItem}>
-        ...
+    <div style={styles.verticalYearSelector}>
+      <span style={styles.heading}>
+        Years
       </span>
+      <div  
+        style={styles.selectorContainer}
+        ref={containerRef}
+        onMouseEnter={handleHoverContainer}
+        onMouseLeave={hadleHoverExitContainer}
+      >
+        {years.map((year, index) => (
+          // アイテムをspanに変更
+          <span
+            key={year}
+            className="selector-item"
+            style={styles.selectorItem}
+            onClick={() => handleSelect(index)}
+            onMouseEnter={(e) => handleHoverItem(e, index)}
+            onMouseLeave={(e) => handleHoverExitItem(e, index)}
+          >
+            {year}
+          </span>
+        ))}
+        <span className="selector-item" style={styles.selectorItem}>
+          ...
+        </span>
+      </div>
     </div>
   );
 };
 
-export default VerticalYearSelector;
+export { VerticalYearSelector };

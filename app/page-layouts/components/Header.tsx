@@ -1,4 +1,5 @@
 import { CSSProperties } from "react"
+import { ThreeFundamentals } from "../../3d-tutorial/fundamentals"
 
 export const Header = () => {
   
@@ -6,12 +7,12 @@ export const Header = () => {
     position: "relative",
     width: "100%",
     height: "100%",
-    backgroundColor: "#017bff",
+    backgroundColor: "#ffffff",
   }
 
   return (
     <div style={headerStyle}>
-
+      <ThreeFundamentals></ThreeFundamentals>
     </div>
   )
 }

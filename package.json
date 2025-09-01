@@ -4,10 +4,12 @@
 	},
 	"dependencies": {
 		"@gsap/react": "^2.1.2",
+		"@types/three": "^0.179.0",
 		"gsap": "^3.13.0",
 		"next": "^15.5.0",
 		"react": "^19.1.1",
-		"react-dom": "^19.1.1"
+		"react-dom": "^19.1.1",
+		"three": "^0.179.1"
 	},
 	"devDependencies": {
 		"@types/node": "24.3.0",
